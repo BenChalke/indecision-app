@@ -1,10 +1,63 @@
-console.log('this is running');
+console.log("this is running");
 
-/* This is JSX code */
-const template = <h1>Indecision App</h1>;
+const app = {
+  title: 'Indecision App',
+  subtitle: 'Put your life in the hands of a computer',
+  options: [],
+}
+
+const onFormSubmit = (e) => {
+  e.preventDefault();
+
+  const option = e.target.elements.option.value;
+
+  if(option) {
+    app.options.push(option);
+    e.target.elements.option.value = '';
+    render();
+  }
+}
+
+const removeOptions = (e) => {
+  e.preventDefault();
+  app.options = [];
+  render();
+}
+
+const makeDecison = () => {
+  const randomNum = Math.floor(Math.random() * app.options.length);
+  const option = app.options[randomNum];
+  alert(option);
+  console.log(randomNum);
+}
+
+
 
 // Get the div from the HTML file
-const appRoot = document.getElementById('app');
+const appRoot = document.getElementById("app");
 
-// Render the content using ReactDOM (what you want to render, where you want to render it)
-ReactDOM.render(template, appRoot);
+const render = () => {
+  /* This is JSX code */
+  const template = (
+    <div>
+      <h1>{app.title}</h1>
+      {app.subtitle && <p>{app.subtitle}</p>}
+      <p>{app.options.length > 0 ? 'Here are the options' : 'No options'}</p>
+      <button disabled={app.options.length === 0} onClick={makeDecison}>What should I do?</button>
+      <button onClick={removeOptions}>Remove All</button>
+      <ol>
+        {
+          app.options.map((option) => <li key={option}>{option}</li>)
+        }
+      </ol>
+      <form onSubmit={onFormSubmit}>
+        <input type="text" name="option"/>
+        <button>Add Option</button>
+      </form>
+    </div>
+  );
+  
+  ReactDOM.render(template, appRoot);
+}
+
+render();
