@@ -5,17 +5,32 @@ import Action from './Action';
 import Header from './Header';
 
 export default class IndecisonApp extends React.Component {
-  constructor(props) {
-    super(props);
+  state = {
+    options: []
+  }
+  handlePick = () => {
+    const randomNum = Math.floor(Math.random() * this.state.options.length);
+    const option = this.state.options[randomNum];
+    alert(option);
+  }
+  handleAddOption = (option) => {
+    if (!option) {
+      return "Enter a valid value to add item.";
+    } else if (this.state.options.indexOf(option) > -1) {
+      return "This option already exists";
+    }
 
-    this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
-    this.handleDeleteOption = this.handleDeleteOption.bind(this);
-    this.handlePick = this.handlePick.bind(this);
-    this.handleAddOption = this.handleAddOption.bind(this);
-
-    this.state = {
-      options: []
-    };
+    this.setState(prevState => ({ options: prevState.options.concat(option) }));
+  }
+  handleDeleteOptions = () => {
+    this.setState(() => ({ options: [] }));
+  }
+  handleDeleteOption = (optionToRemove) => {
+    this.setState(prevState => ({
+      options: prevState.options.filter(option => {
+        return optionToRemove !== option;
+      })
+    }));
   }
   componentDidMount() {
     try {
@@ -37,30 +52,6 @@ export default class IndecisonApp extends React.Component {
   }
   componentWillUnmount() {
     console.log("component will unmount");
-  }
-  handlePick() {
-    const randomNum = Math.floor(Math.random() * this.state.options.length);
-    const option = this.state.options[randomNum];
-    alert(option);
-  }
-  handleAddOption(option) {
-    if (!option) {
-      return "Enter a valid value to add item.";
-    } else if (this.state.options.indexOf(option) > -1) {
-      return "This option already exists";
-    }
-
-    this.setState(prevState => ({ options: prevState.options.concat(option) }));
-  }
-  handleDeleteOptions() {
-    this.setState(() => ({ options: [] }));
-  }
-  handleDeleteOption(optionToRemove) {
-    this.setState(prevState => ({
-      options: prevState.options.filter(option => {
-        return optionToRemove !== option;
-      })
-    }));
   }
   render() {
     const subTitle = "Put your life in the hands of a computer";
