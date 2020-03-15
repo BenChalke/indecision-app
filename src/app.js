@@ -8,7 +8,7 @@ class IndecisonApp extends React.Component {
     this.handleAddOption = this.handleAddOption.bind(this);
     
     this.state = {
-      options: props.options,
+      options: [],
     }
   }
   componentDidMount() {
@@ -78,10 +78,6 @@ class IndecisonApp extends React.Component {
       </div>
     )
   }
-}
-
-IndecisonApp.defaultProps = {
-  options: [],
 }
 
 
